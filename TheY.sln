@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheY", "TheY\TheY\TheY.csproj", "{02B56449-2868-4DE4-980E-6F3D52EC8CED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheYContent", "TheY\TheYContent\TheYContent.contentproj", "{AD2C73A4-71A2-4FE0-A997-D42D3A14DD85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1995BECC-8C1C-42ED-B75E-32C7D5CFA0D3}"
+EndProject
+
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EF188965-4561-4A4B-BBE6-5D1CCC17D5BA}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02B56449-2868-4DE4-980E-6F3D52EC8CED}.Debug|x86.ActiveCfg = Debug|x86
+		{02B56449-2868-4DE4-980E-6F3D52EC8CED}.Debug|x86.Build.0 = Debug|x86
+		{02B56449-2868-4DE4-980E-6F3D52EC8CED}.Release|x86.ActiveCfg = Release|x86
+		{02B56449-2868-4DE4-980E-6F3D52EC8CED}.Release|x86.Build.0 = Release|x86
+		{AD2C73A4-71A2-4FE0-A997-D42D3A14DD85}.Debug|x86.ActiveCfg = Debug|x86
+		{AD2C73A4-71A2-4FE0-A997-D42D3A14DD85}.Release|x86.ActiveCfg = Release|x86
+		{1995BECC-8C1C-42ED-B75E-32C7D5CFA0D3}.Debug|x86.ActiveCfg = Debug|x86
+		{1995BECC-8C1C-42ED-B75E-32C7D5CFA0D3}.Debug|x86.Build.0 = Debug|x86
+		{1995BECC-8C1C-42ED-B75E-32C7D5CFA0D3}.Release|x86.ActiveCfg = Release|x86
+		{1995BECC-8C1C-42ED-B75E-32C7D5CFA0D3}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

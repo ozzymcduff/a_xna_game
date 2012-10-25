@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\projects\a_xna_game\Tests\bin\Debug\Tests.dll" total="2" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2012-10-25" time="20:57:16">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5456" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\projects\a_xna_game" machine-name="MATHIEU-EEE" user="mathieu" user-domain="mathieu-eee" />
+  <culture-info current-culture="sv-SE" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\projects\a_xna_game\Tests\bin\Debug\Tests.dll" executed="True" result="Failure" success="False" time="0.355" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="0.327" asserts="0">
+        <results>
+          <test-suite type="TestFixture" name="GuyTests" executed="True" result="Failure" success="False" time="0.320" asserts="0">
+            <results>
+              <test-case name="Tests.GuyTests.Should_bounce_at_edge" executed="True" result="Failure" success="False" time="0.273" asserts="1">
+                <failure>
+                  <message><![CDATA[  Expected: {X:50 Y:100}
+  But was:  {X:50 Y:99}
+]]></message>
+                  <stack-trace><![CDATA[at Tests.GuyTests.Should_bounce_at_edge() in c:\projects\a_xna_game\Tests\GuyTests.cs:line 58
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case name="Tests.GuyTests.Should_start_at_bottom_middle" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
