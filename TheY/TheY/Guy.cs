@@ -55,7 +55,7 @@ namespace TheY
             // Move the sprite by speed, scaled by elapsed time.
             Position +=
                 spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            //Console.WriteLine(gameTime.ElapsedGameTime.TotalSeconds);
             int MaxX =
                 viewport.Width - myTexture.Width;
             int MinX = 0;

@@ -46,16 +46,20 @@ namespace Tests
         public void Should_bounce_at_edge()
         {
             var guy = new Guy();
-            var viewport = new FakeViewPort { OnBounds = () => new Rectangle(0, 0, 100, 100) };
+            var viewport = new FakeViewPort { OnBounds = () => new Rectangle(0, 0, 1000, 1000) };
             guy.InitPosition(viewport);
             guy.Handle(new KeyboardState(new[] { Keys.Down }));
             guy.myTexture = new FakeTexture2D() { 
                 OnHeight = ()=> 1,
                 OnWidth = ()=> 1
             };
-            guy.UpdateSprite(viewport,new GameTime(new TimeSpan(100), new TimeSpan(10)));
-            
-            Assert.That(guy.Position, Is.EqualTo(new Vector2(50, 99)));
+            var positions = new List<Vector2>();
+            positions.Add(guy.Position);
+            guy.UpdateSprite(viewport, new GameTime(new TimeSpan(0, 0, 2), new TimeSpan(0, 0, 5)));
+            positions.Add(guy.Position);
+            guy.UpdateSprite(viewport, new GameTime(new TimeSpan(0, 0, 8), new TimeSpan(0, 0, 5)));
+            positions.Add(guy.Position);
+            Assert.That(positions.ToArray(), Is.EquivalentTo(new[] { new Vector2(500, 1000), new Vector2(500, 999), new Vector2(500, 749) }));
         }
     }
 }
