@@ -73,7 +73,7 @@ namespace TheY
             guy = new Guy();
             bird = new Bird();
             base.Initialize();
-            guy.InitPosition(this.GraphicsDevice.Viewport.ToIf());
+            guy.InitPosition(this.GraphicsDevice.Viewport.Bounds);
             Console.WriteLine(string.Format("Width: {1}, Height: {0}", this.GraphicsDevice.Viewport.Height, this.GraphicsDevice.Viewport.Width));
             Console.WriteLine(string.Format("X: {0}, Y: {1}", this.GraphicsDevice.Viewport.X, this.GraphicsDevice.Viewport.Y));
             /*
@@ -124,7 +124,7 @@ namespace TheY
 
             guy.HandleInput();
 
-            guy.UpdateSprite(graphics.GraphicsDevice.Viewport.ToIf(), gameTime);
+            guy.UpdateSprite(graphics.GraphicsDevice.Viewport.Bounds, gameTime);
             // TODO: Add your update logic here
             bird.UpdateSprite(graphics.GraphicsDevice.Viewport, gameTime);
             base.Update(gameTime);

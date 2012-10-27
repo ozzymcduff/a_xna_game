@@ -50,17 +50,17 @@ namespace TheY
             }
         }
 
-        public void UpdateSprite(IViewport viewport, GameTime gameTime)
+        public void UpdateSprite(Rectangle bounds, GameTime gameTime)
         {
             // Move the sprite by speed, scaled by elapsed time.
             Position +=
                 spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             //Console.WriteLine(gameTime.ElapsedGameTime.TotalSeconds);
             int MaxX =
-                viewport.Width - myTexture.Width;
+                bounds.Width - myTexture.Width;
             int MinX = 0;
             int MaxY =
-                viewport.Height - myTexture.Height;
+                bounds.Height - myTexture.Height;
             int MinY = 0;
 
             // Check for bounce.
@@ -109,9 +109,9 @@ namespace TheY
             spriteBatch.Draw(myTexture.Real(), Position, Color.White);
         }
 
-        public void InitPosition(IViewport viewport)
+        public void InitPosition(Rectangle bounds)
         {
-            this.Position = new Vector2(viewport.Bounds.Width/2,viewport.Bounds.Bottom);
+            this.Position = new Vector2(bounds.Width/2,bounds.Bottom);
         }
     }
 }
