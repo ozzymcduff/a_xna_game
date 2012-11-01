@@ -31,11 +31,36 @@ namespace TheY
             texture.Dispose();
         }
     }
+    public class SpriteBatchAdapter : ISpriteBatch
+    {
+        private SpriteBatch self;
+
+        public SpriteBatchAdapter(SpriteBatch self)
+        {
+            this.self = self;
+        }
+        public void Draw(ITexture2D myTexture, Vector2 spritePosition, Color color) 
+        {
+            self.Draw(myTexture.Real(), spritePosition, color);
+        }
+    }
+    public interface ISpriteBatch
+    {
+        void Draw(ITexture2D myTexture, Vector2 spritePosition, Color color);
+    }
     public static class Extensions
     {
         public static ITexture2D ToIf(this Texture2D self)
         {
             return new Texture2DAdapter(self);
+        }
+        public static ISpriteBatch ToIf(this SpriteBatch self)
+        {
+            return new SpriteBatchAdapter(self);
+        }
+        public static double Distance(this Vector2 self, Vector2 other)
+        {
+            return Vector2.Distance(self, other);
         }
     }
 }

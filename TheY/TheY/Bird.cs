@@ -15,19 +15,19 @@ namespace TheY
 
         // Store some information about the sprite's motion.
         Vector2 spriteSpeed = new Vector2(50.0f, 50.0f);
-        public Texture2D myTexture;
+        public ITexture2D myTexture;
 
-        public void UpdateSprite(Viewport viewport, GameTime gameTime)
+        public void UpdateSprite(Rectangle bounds, GameTime gameTime)
         {
             // Move the sprite by speed, scaled by elapsed time.
             spritePosition +=
                 spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             int MaxX =
-                viewport.Width - myTexture.Width;
+                bounds.Width - myTexture.Width;
             int MinX = 0;
             int MaxY =
-                viewport.Height - myTexture.Height;
+                bounds.Height - myTexture.Height;
             int MinY = 0;
 
             // Check for bounce.
@@ -65,15 +65,18 @@ namespace TheY
                 myTexture = null;
             }
         }
+        public string TextureName = "bird";
 
-        internal void Load(Microsoft.Xna.Framework.Content.ContentManager Content)
-        {
-            myTexture = Content.Load<Texture2D>("bird");
-        }
-
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(ISpriteBatch spriteBatch)
         {
             spriteBatch.Draw(myTexture, spritePosition, Color.White);
+        }
+
+        public void PointTo(Guy guy)
+        {
+            var direction = (guy.Position - this.spritePosition);
+            direction.Normalize();
+            this.spriteSpeed = direction * 50.0f;
         }
     }
 }

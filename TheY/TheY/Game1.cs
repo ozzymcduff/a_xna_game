@@ -41,6 +41,50 @@ namespace TheY
         private SpriteBatch batch;
     }
 
+    public class World:IDisposable
+    {
+        public World()
+        {
+            guy = new Guy();
+            bird = new Bird();
+        }
+        public Guy guy;
+        public Bird bird;
+        protected Rectangle bounds;
+        public ISpriteBatch SpriteBatch { get; set; }
+        public void Initialize(Rectangle bounds)
+        {
+            guy.InitPosition(bounds);
+            this.bounds = bounds;
+        }
+
+        public void Dispose()
+        {
+            guy.Dispose();
+            bird.Dispose();
+        }
+
+        public virtual void LoadContent(ContentManager Content)
+        {
+            guy.myTexture = Content.Load<Texture2D>(guy.TextureName).ToIf();
+            bird.myTexture = Content.Load<Texture2D>(bird.TextureName).ToIf();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            guy.HandleInput();
+
+            guy.UpdateSprite(bounds, gameTime);
+            bird.PointTo(guy);
+            bird.UpdateSprite(bounds, gameTime);
+        }
+
+        internal void Draw(GameTime gameTime)
+        {
+            guy.Draw(SpriteBatch);
+            bird.Draw(SpriteBatch);
+        }
+    }
 
     /// <summary>
     /// This is the main type for your game
@@ -48,9 +92,8 @@ namespace TheY
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
+        private World world;
         SpriteBatch spriteBatch;
-        private Guy guy;
-        private Bird bird;
         DrawPrimitives _drawPrimitives;
 
         public Game1()
@@ -70,10 +113,11 @@ namespace TheY
         {
             //this.GraphicsDevice.Viewport.
             // TODO: Add your initialization logic here
-            guy = new Guy();
-            bird = new Bird();
+            world = new World();
             base.Initialize();
-            guy.InitPosition(this.GraphicsDevice.Viewport.Bounds);
+            world.Initialize(this.GraphicsDevice.Viewport.Bounds);
+            
+
             Console.WriteLine(string.Format("Width: {1}, Height: {0}", this.GraphicsDevice.Viewport.Height, this.GraphicsDevice.Viewport.Width));
             Console.WriteLine(string.Format("X: {0}, Y: {1}", this.GraphicsDevice.Viewport.X, this.GraphicsDevice.Viewport.Y));
             /*
@@ -93,8 +137,8 @@ namespace TheY
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            guy.Load(Content);
-            bird.Load(Content);
+            world.SpriteBatch = spriteBatch.ToIf();
+            world.LoadContent(Content);
             _drawPrimitives = new DrawPrimitives(GraphicsDevice, spriteBatch);
             // TODO: use this.Content to load your game content here
         }
@@ -105,8 +149,7 @@ namespace TheY
         /// </summary>
         protected override void UnloadContent()
         {
-            guy.Dispose();
-            bird.Dispose();
+            world.Dispose();
             // TODO: Unload any non ContentManager content here
         }
 
@@ -121,12 +164,7 @@ namespace TheY
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            guy.HandleInput();
-
-            guy.UpdateSprite(graphics.GraphicsDevice.Viewport.Bounds, gameTime);
-            // TODO: Add your update logic here
-            bird.UpdateSprite(graphics.GraphicsDevice.Viewport, gameTime);
+            world.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -141,8 +179,7 @@ namespace TheY
             // Draw the sprite.
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
-            guy.Draw(spriteBatch);
-            bird.Draw(spriteBatch);
+            world.Draw(gameTime);
             
             var viewport = graphics.GraphicsDevice.Viewport;
             _drawPrimitives.DrawLine(Color.Pink, new Line { 

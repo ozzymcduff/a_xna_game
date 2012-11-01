@@ -12,6 +12,13 @@ namespace Tests
     [TestFixture]
     public class GuyTests
     {
+        class WorldUnderTest:World
+        {
+            public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
+            {
+            }
+        }
+
 
         class FakeTexture2D : ITexture2D
         {
@@ -26,13 +33,37 @@ namespace Tests
                 throw new NotImplementedException(); 
             }
         }
-
+        class EmptySpriteBatch : ISpriteBatch
+        {
+            public void Draw(ITexture2D myTexture, Vector2 spritePosition, Color color)
+            {
+            }
+        }
         [Test]
         public void Should_start_at_bottom_middle() 
         {
             var guy = new Guy();
             guy.InitPosition(new Rectangle(0, 0, 100, 100));
             Assert.That(guy.Position, Is.EqualTo(new Vector2(50, 100)));
+        }
+
+        [Test]
+        public void Should_not_move_by_default()
+        {
+            var guy = new Guy();
+            guy.myTexture = new FakeTexture2D()
+            {
+                OnHeight = () => 1,
+                OnWidth = () => 1
+            };
+            var bounds = new Rectangle(0, 0, 1000, 1000);
+            guy.InitPosition(bounds);
+            guy.Handle(new KeyboardState());
+
+            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 2), new TimeSpan(0, 0, 5)));
+            Assert.That(guy.Position, Is.EqualTo(new Vector2(500, 999)));
+            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 8), new TimeSpan(0, 0, 5)));
+            Assert.That(guy.Position, Is.EqualTo(new Vector2(500, 999)));
         }
 
         [Test]
@@ -53,6 +84,38 @@ namespace Tests
             guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 8), new TimeSpan(0, 0, 5)));
             positions.Add(guy.Position);
             Assert.That(positions.ToArray(), Is.EquivalentTo(new[] { new Vector2(500, 1000), new Vector2(500, 999), new Vector2(500, 749) }));
+        }
+
+        [Test]
+        public void The_bird_should_chase_the_guy()
+        {
+            var bounds = new Rectangle(0, 0, 1000, 1000);
+            var world = new WorldUnderTest();
+            var bird = world.bird;
+
+            bird.myTexture = new FakeTexture2D()
+            {
+                OnHeight = () => 1,
+                OnWidth = () => 1
+            };
+            var guy = world.guy;
+            guy.myTexture = new FakeTexture2D()
+            {
+                OnHeight = () => 1,
+                OnWidth = () => 1
+            };
+            world.Initialize(bounds);
+            
+            world.SpriteBatch = new EmptySpriteBatch();
+            double lastdistance = 1000;
+            for (int i = 0; i < 5; i++)
+            {
+                world.Update(new GameTime(new TimeSpan(0, 0, 2+i*5), new TimeSpan(0, 0, 5)));
+                var distance = guy.Position.Distance(bird.spritePosition);
+                Console.WriteLine(distance);
+                Assert.That(distance, Is.LessThanOrEqualTo(lastdistance));
+                lastdistance = distance;
+            }
         }
 
     }

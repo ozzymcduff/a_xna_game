@@ -25,6 +25,7 @@ namespace TheY
 
         public void Handle(KeyboardState keyboardstate)
         {
+            var newspeed = new Vector2(50.0f, 50.0f);
             const float size = 50.0f;
             //|| GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed
 
@@ -32,22 +33,27 @@ namespace TheY
             {
                 spriteSpeed.Y = size;
                 spriteSpeed.X = 0;
+                return;
             }
             if (keyboardstate.IsKeyDown(Keys.Up))
             {
                 spriteSpeed.Y = -1 * size;
                 spriteSpeed.X = 0;
+                return;
             }
             if (keyboardstate.IsKeyDown(Keys.Left))
             {
                 spriteSpeed.Y = 0;
                 spriteSpeed.X = -1 * size;
+                return;
             }
             if (keyboardstate.IsKeyDown(Keys.Right))
             {
                 spriteSpeed.Y = 0;
                 spriteSpeed.X = size;
+                return;
             }
+            spriteSpeed = new Vector2(0f, 0f);
         }
 
         public void UpdateSprite(Rectangle bounds, GameTime gameTime)
@@ -98,15 +104,11 @@ namespace TheY
                 myTexture = null;
             }
         }
+        public string TextureName = "guy";
 
-        internal void Load(Microsoft.Xna.Framework.Content.ContentManager Content)
+        internal void Draw(ISpriteBatch spriteBatch)
         {
-            myTexture = Content.Load<Texture2D>("guy").ToIf();
-        }
-
-        internal void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(myTexture.Real(), Position, Color.White);
+            spriteBatch.Draw(myTexture, Position, Color.White);
         }
 
         public void InitPosition(Rectangle bounds)
