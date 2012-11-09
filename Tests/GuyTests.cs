@@ -39,6 +39,20 @@ namespace Tests
             {
             }
         }
+        class SimulatedGameTime
+        {
+            public SimulatedGameTime()
+            {
+                current = new TimeSpan(0,0,0,0,0);
+            }
+            private TimeSpan current;
+            public GameTime Increment(TimeSpan elapsed) 
+            {
+                current = current.Add(elapsed);
+                return new GameTime(current, elapsed);
+            }
+        }
+
         [Test]
         public void Should_start_at_bottom_middle() 
         {
@@ -59,10 +73,10 @@ namespace Tests
             var bounds = new Rectangle(0, 0, 1000, 1000);
             guy.InitPosition(bounds);
             guy.Handle(new KeyboardState());
-
-            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 2), new TimeSpan(0, 0, 5)));
+            var time = new SimulatedGameTime();
+            guy.UpdateSprite(bounds, time.Increment(new TimeSpan(0,0,2)));
             Assert.That(guy.Position, Is.EqualTo(new Vector2(500, 999)));
-            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 8), new TimeSpan(0, 0, 5)));
+            guy.UpdateSprite(bounds, time.Increment(new TimeSpan(0, 0, 5)));
             Assert.That(guy.Position, Is.EqualTo(new Vector2(500, 999)));
         }
 
@@ -79,9 +93,10 @@ namespace Tests
             };
             var positions = new List<Vector2>();
             positions.Add(guy.Position);
-            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 2), new TimeSpan(0, 0, 5)));
+            var time = new SimulatedGameTime();
+            guy.UpdateSprite(bounds, time.Increment(new TimeSpan(0, 0, 5)));
             positions.Add(guy.Position);
-            guy.UpdateSprite(bounds, new GameTime(new TimeSpan(0, 0, 8), new TimeSpan(0, 0, 5)));
+            guy.UpdateSprite(bounds, time.Increment(new TimeSpan(0, 0, 5)));
             positions.Add(guy.Position);
             Assert.That(positions.ToArray(), Is.EquivalentTo(new[] { new Vector2(500, 1000), new Vector2(500, 999), new Vector2(500, 749) }));
         }
@@ -105,12 +120,12 @@ namespace Tests
                 OnWidth = () => 1
             };
             world.Initialize(bounds);
-            
+            var time = new SimulatedGameTime();
             world.SpriteBatch = new EmptySpriteBatch();
             double lastdistance = 1000;
             for (int i = 0; i < 5; i++)
             {
-                world.Update(new GameTime(new TimeSpan(0, 0, 2+i*5), new TimeSpan(0, 0, 5)));
+                world.Update(time.Increment(new TimeSpan(0, 0, 5)));
                 var distance = guy.Position.Distance(bird.spritePosition);
                 Console.WriteLine(distance);
                 Assert.That(distance, Is.LessThanOrEqualTo(lastdistance));
