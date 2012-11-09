@@ -122,10 +122,10 @@ namespace Tests
             world.Initialize(bounds);
             var time = new SimulatedGameTime();
             world.SpriteBatch = new EmptySpriteBatch();
-            double lastdistance = 1000;
-            for (int i = 0; i < 5; i++)
+            double lastdistance = 10000;
+            for (int i = 0; i < 15; i++)
             {
-                world.Update(time.Increment(new TimeSpan(0, 0, 5)));
+                world.Update(time.Increment(new TimeSpan(0, 0, 1)));
                 var distance = guy.Position.Distance(bird.spritePosition);
                 Console.WriteLine(distance);
                 Assert.That(distance, Is.LessThanOrEqualTo(lastdistance));
